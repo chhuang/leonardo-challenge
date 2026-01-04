@@ -95,7 +95,7 @@ export function CharacterCollectibleModal({
                         
                         {/* HUD Markings */}
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] font-mono text-emerald-500/40 uppercase tracking-widest">Scanning</div>
-                        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] font-mono text-emerald-500/40 uppercase tracking-widest leading-none">Accessing_Archive_v4.0</div>
+                        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] font-mono text-emerald-500/40 uppercase tracking-widest leading-none">Accessing_Archive_v3.5</div>
                     </div>
 
                     <div className="flex flex-col items-center gap-2">

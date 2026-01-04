@@ -50,7 +50,7 @@ export function TacticalHudBar({
             <div className="flex items-end gap-2 mb-2 px-2 opacity-80">
                 <div className={`h-1 w-16 ${accentBg} transition-colors duration-500`} />
                 <div className="h-[1px] flex-1 bg-white/20" />
-                <div className="text-[10px] font-mono tracking-widest text-white/50 lowercase italic">system_terminal.v2</div>
+                <div className="text-[10px] font-mono tracking-widest text-white/50 lowercase italic">challenge_v3.5</div>
             </div>
 
             <div className="bg-[#020904]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center justify-between p-3 relative overflow-hidden group">

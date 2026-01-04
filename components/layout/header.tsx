@@ -31,7 +31,7 @@ export function Header() {
                     <span>Morty</span>
                 </h1>
                 <div className="h-4 w-[1px] bg-white/10 mx-1" />
-                <span className="text-[9px] md:text-[11px] font-mono text-emerald-500/60 uppercase tracking-widest font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Explorer_v2.0</span>
+                <span className="text-[9px] md:text-[11px] font-mono text-emerald-500/60 uppercase tracking-widest font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Explorer_v3.5</span>
             </div>
           </div>
 
