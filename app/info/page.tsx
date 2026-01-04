@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MasonryGrid } from '@/components/characters/masonry-grid';
 import { TacticalHudBar } from '@/components/characters/tactical-hud-bar';
+import { MobileNavHud } from '@/components/characters/mobile-nav-hud';
 import { CharacterFilters, FilterState } from '@/components/characters/character-filters';
 import { useCharacterData } from '@/components/characters/use-character-data.hooks';
 import { useUserContext } from '@/components/auth/user-context';
 import { CharacterCollectibleModal } from '@/components/characters/character-collectible-modal';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 export default function InfoPage() {
   const searchParams = useSearchParams();
@@ -18,6 +20,17 @@ export default function InfoPage() {
   const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   
+  const [allCharacters, setAllCharacters] = useState<any[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect Mobile for UI logic
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Default to Human as per Hero Banner design
   const [filters, setFilters] = useState<FilterState>({
     species: 'Human',
@@ -26,13 +39,14 @@ export default function InfoPage() {
 
   const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters);
-    // Reset to page 1 when deep filters change
-    if (newFilters.species !== filters.species) {
-        router.push('/info?page=1');
-    }
+    setAllCharacters([]); // Reset list on filter change
+    router.push('/info?page=1');
   };
 
   const handlePageChange = (page: number) => {
+    if (!isMobile) {
+        setAllCharacters([]); // Reset for pagination on desktop (optional, depends on if we want to scroll back to top)
+    }
     router.push(`/info?page=${page}`);
   };
 
@@ -46,6 +60,22 @@ export default function InfoPage() {
   // Fetch data with server-side filters
   const { data, loading, error } = useCharacterData(currentPage, filters.species, filters.status);
 
+  // Merge characters for Infinite Scroll on Mobile
+  useEffect(() => {
+    if (data?.characters?.results) {
+        if (isMobile) {
+            setAllCharacters(prev => {
+                const newResults = data.characters.results.filter(
+                    (nr: any) => !prev.some(pr => pr.id === nr.id)
+                );
+                return [...prev, ...newResults];
+            });
+        } else {
+            setAllCharacters(data.characters.results);
+        }
+    }
+  }, [data, isMobile, filters]);
+
   if (!isAuthenticated) return null;
 
   if (error) {
@@ -56,45 +86,70 @@ export default function InfoPage() {
     );
   }
 
-  const characters = data?.characters?.results || [];
   const totalPages = data?.characters?.info?.pages || 1;
   const totalCount = data?.characters?.info?.count || 0;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-32"> {/* Increased padding bottom for HUD */}
+    <div className="min-h-screen bg-[#0a0a0a] pb-32">
        
-       <div className="container mx-auto px-4 py-8 max-w-7xl">
+       <div className="container mx-auto px-4 pt-24 md:pt-32 pb-8 max-w-7xl">
          
          {/* Grid Content */}
          <AnimatePresence mode='wait'>
             <motion.div
-                key={currentPage + filters.species + filters.status}
+                key={filters.species + filters.status + (isMobile ? 'mobile' : currentPage)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
             >
                 <MasonryGrid
-                    characters={characters}
-                    loading={loading}
+                    characters={allCharacters}
+                    loading={loading && allCharacters.length === 0}
                     onCharacterClick={setSelectedCharacterId}
                 />
             </motion.div>
          </AnimatePresence>
+
+         {/* INFINITE SCROLL SENTINEL (MOBILE ONLY) */}
+         {isMobile && currentPage < totalPages && (
+            <div 
+                className="h-20 flex items-center justify-center"
+                ref={(el) => {
+                    if (el && !loading) {
+                        const observer = new IntersectionObserver((entries) => {
+                            if (entries[0].isIntersecting) {
+                                handlePageChange(currentPage + 1);
+                                observer.disconnect();
+                            }
+                        });
+                        observer.observe(el);
+                    }
+                }}
+            >
+                {loading && <Loader2 className="w-6 h-6 animate-spin text-emerald-500/50" />}
+            </div>
+         )}
          
        </div>
 
       {/* FIXED TACTICAL HUD */}
       {!selectedCharacterId && (
-        <TacticalHudBar 
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            totalCount={totalCount}
-            loading={loading}
-        />
+        <>
+          <TacticalHudBar 
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              totalCount={totalCount}
+              loading={loading}
+          />
+          <MobileNavHud 
+              filters={filters}
+              onFilterChange={handleFilterChange}
+          />
+        </>
       )}
 
       {/* Collectible Modal */}

@@ -53,12 +53,77 @@ export function CharacterCollectibleModal({
         
         <AnimatePresence mode="wait">
           {loading ? (
-            <div className="h-full w-full flex flex-col items-center justify-center bg-black/80 backdrop-blur-md rounded-xl border border-white/10">
-                <div className="relative">
-                    <div className="w-16 h-16 border-4 border-t-transparent border-white/20 rounded-full animate-spin" />
-                    <div className="absolute inset-0 w-16 h-16 border-4 border-b-transparent border-white/50 rounded-full animate-spin mix-blend-overlay" style={{ animationDuration: '1.5s', animationDirection: 'reverse' }} />
+            <div className={`relative w-full h-full flex flex-col items-center justify-center overflow-hidden rounded-none border border-white/10 shadow-2xl bg-[#06140b]`}>
+                {/* TACTICAL CORNERS */}
+                <div className="absolute inset-0 pointer-events-none z-50">
+                    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-emerald-500/50" />
+                    <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-emerald-500/50" />
+                    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-emerald-500/50" />
+                    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-emerald-500/50" />
                 </div>
-                <div className="mt-4 text-xs font-mono text-white/50 tracking-[0.2em] animate-pulse">ACCESSING DATABASE...</div>
+
+                {/* HUD GRID */}
+                <div className="absolute inset-0 opacity-[0.05] pointer-events-none z-0"
+                     style={{ 
+                         backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 1px, transparent 1px)', 
+                         backgroundSize: '40px 40px' 
+                     }} 
+                />
+
+                {/* SCANNING LINE */}
+                <motion.div 
+                    initial={{ top: '10%' }}
+                    animate={{ top: '90%' }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear", repeatType: "mirror" }}
+                    className="absolute left-1/4 right-1/4 h-[1px] bg-emerald-500/40 z-20 shadow-[0_0_15px_rgba(16,185,129,0.5)]"
+                />
+
+                <div className="relative z-10 flex flex-col items-center">
+                    {/* HUB SPINNER */}
+                    <div className="relative w-24 md:w-32 h-24 md:h-32 mb-6 md:mb-8">
+                        {/* Outer Ring */}
+                        <div className="absolute inset-0 border-2 border-emerald-500/10 rounded-full" />
+                        <div className="absolute inset-0 border-2 border-t-emerald-500/40 rounded-full animate-[spin_3s_linear_infinite]" />
+                        
+                        {/* Inner Orbit */}
+                        <div className="absolute inset-3 md:inset-4 border border-emerald-500/5 rounded-full" />
+                        <div className="absolute inset-3 md:inset-4 border border-b-emerald-500/60 rounded-full animate-[spin_1.5s_linear_infinite_reverse]" />
+                        
+                        {/* Center Point */}
+                        <div className="absolute inset-[45%] bg-emerald-500/20 rounded-full animate-pulse blur-sm" />
+                        <div className="absolute inset-[48%] bg-emerald-500 rounded-full" />
+                        
+                        {/* HUD Markings */}
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] font-mono text-emerald-500/40 uppercase tracking-widest">Scanning</div>
+                        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] font-mono text-emerald-500/40 uppercase tracking-widest leading-none">Accessing_Archive_v4.0</div>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="text-lg md:text-xl font-black text-white uppercase tracking-[0.3em] leading-none animate-[flicker_2s_infinite]">Initializing...</div>
+                        <div className="text-[9px] md:text-[10px] font-mono text-emerald-500/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                             <span>Decrypting_DNA</span>
+                             <span className="inline-block w-6 md:w-8 h-[2px] bg-emerald-500/20 relative overflow-hidden">
+                                 <motion.div 
+                                    className="absolute inset-0 bg-emerald-500"
+                                    animate={{ left: ['-100%', '100%'] }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                 />
+                             </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* CORNER DATA STREAMS (Simplified on mobile) */}
+                <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 text-[7px] md:text-[8px] font-mono text-emerald-500/20 uppercase tracking-widest flex flex-col gap-1 z-10">
+                    <div>SCTR_C137_LINK</div>
+                    <div className="hidden sm:block">DATA_PKT_RECV: 00FF12</div>
+                    <div>SIG_STRENGTH: 98%</div>
+                </div>
+                <div className="absolute bottom-6 md:bottom-8 right-6 md:right-8 text-[7px] md:text-[8px] font-mono text-emerald-500/20 uppercase tracking-widest text-right flex flex-col gap-1 z-10">
+                    <div>PORTAL_GATE: ON</div>
+                    <div className="hidden sm:block">CURR_DIM: EARTH_C137</div>
+                    <div>MEM_ALLOC: 4.2TB</div>
+                </div>
             </div>
           ) : character ? (
             <motion.div
@@ -66,7 +131,7 @@ export function CharacterCollectibleModal({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className={`relative w-full h-full flex overflow-hidden rounded-none border border-white/10 shadow-2xl`}
+              className={`relative w-full h-full flex flex-col md:flex-row overflow-hidden rounded-none border border-white/10 shadow-2xl`}
               style={{ backgroundColor: isHuman ? '#06140b' : '#140612' }}
             >
               {/* TACTICAL CORNERS (Same as Card) */}
@@ -89,18 +154,18 @@ export function CharacterCollectibleModal({
                    }} 
               />
               {/* Deep Ambient Glow */}
-              <div className={`absolute inset-0 z-0 bg-gradient-to-b from-${isHuman ? 'emerald' : 'fuchsia'}-950/20 via-black/20 to-black/80 pointer-events-none`} />
+              <div className={`absolute inset-0 z-0 bg-gradient-to-b from-${isHuman ? 'emerald' : 'fuchsia'}-950/20 via-black/20 to-black/80 pointer-events-none md:block hidden`} />
               
               {/* --- CLOSE BUTTON --- */}
               <button 
                   onClick={onClose}
-                  className="group absolute top-6 right-6 z-[60] w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 hover:rotate-90 hover:scale-110"
+                  className="group absolute top-4 md:top-6 right-4 md:right-6 z-[60] w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/20 border border-white/10 rounded-full transition-all duration-300 hover:rotate-90 hover:scale-110"
               >
                   <X className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" />
               </button>
 
-              {/* --- LEFT: VISUAL DATA --- */}
-              <div className="w-1/2 h-full relative flex flex-col border-r border-white/5 bg-black/20">
+              {/* --- LEFT: VISUAL DATA (Top on Mobile) --- */}
+              <div className="w-full h-[40vh] md:w-1/2 md:h-full relative flex flex-col border-b md:border-b-0 md:border-r border-white/5 bg-black/20 shrink-0">
                    
                    {/* SCANNING LINE ANIMATION */}
                    <motion.div 
@@ -111,7 +176,7 @@ export function CharacterCollectibleModal({
                    />
                    
                    {/* IMAGE CONTAINER */}
-                   <div className="flex-1 relative flex items-center justify-center overflow-hidden p-12">
+                   <div className="flex-1 relative flex items-center justify-center overflow-hidden p-6 md:p-12">
                        {/* Hologram Effect Base */}
                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
                        
@@ -138,69 +203,58 @@ export function CharacterCollectibleModal({
                             style={{ transform: 'translateX(-4px)' }}
                            />
                        </motion.div>
-
-
                    </div>
-
-
               </div>
 
 
-              {/* --- RIGHT: DOSSIER CONTENT (FIXED HEIGHT, NO GLOBAL SCROLL) --- */}
-              <div className="w-1/2 h-full flex flex-col bg-[#080808] relative overflow-hidden">
+              {/* --- RIGHT: DOSSIER CONTENT (Scrollable) --- */}
+              <div className="w-full md:w-1/2 h-full flex flex-col bg-[#080808] relative overflow-y-auto custom-scrollbar">
                    
                    {/* 1. HEADER & BIOMETRICS (Fixed) */}
-                   <div className="p-8 pb-4 z-20 bg-gradient-to-b from-[#080808] to-[#080808]/90 border-b border-white/5 relative shrink-0">
-                        
-                        {/* ID Label */}
-                        <div className="flex items-center gap-2 mb-2 opacity-50 pr-16">
-                            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-white/40">Database Record</span>
-                            <div className="h-px flex-1 bg-white/10" />
-                            <span className="text-[10px] font-mono text-white/60">ID-#{character.id}</span>
-                        </div>
-
+                   <div className="p-6 md:p-8 pb-4 z-20 bg-[#080808] sticky top-0 md:relative border-b border-white/5 shrink-0">
+                       
                         {/* Name (Scaled & Styled) */}
-                        <h1 className="text-5xl lg:text-6xl font-black text-white leading-[0.8] tracking-tighter uppercase mb-6 mix-blend-screen truncate">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[0.8] tracking-tighter uppercase mb-6 mix-blend-screen truncate">
                             {character.name}
                         </h1>
 
                         {/* HIGH-TECH BIOMETRICS ROW (3-Col Grid) */}
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-3 gap-2 md:gap-3">
                             {/* Species Module */}
-                            <div className="relative group overflow-hidden bg-white/[0.02] border border-white/10 rounded px-3 py-2.5">
+                            <div className="relative group overflow-hidden bg-white/[0.02] border border-white/10 rounded px-2 md:px-3 py-2 md:py-2.5">
                                 <div className={`absolute top-0 left-0 w-[2px] h-full ${accentBg} transition-all group-hover:w-1`} />
-                                <div className="text-[9px] font-mono text-white/30 uppercase tracking-widest mb-1">Variant</div>
+                                <div className="text-[8px] md:text-[9px] font-mono text-white/30 uppercase tracking-widest mb-1">Variant</div>
                                 <div className="flex items-center gap-2">
-                                    <span className={`text-sm font-bold uppercase tracking-tight ${accentText} truncate`}>{character.species}</span>
+                                    <span className={`text-xs md:text-sm font-bold uppercase tracking-tight ${accentText} truncate`}>{character.species}</span>
                                 </div>
                             </div>
                             
                             {/* Gender Module */}
-                            <div className="relative group overflow-hidden bg-white/[0.02] border border-white/10 rounded px-3 py-2.5">
+                            <div className="relative group overflow-hidden bg-white/[0.02] border border-white/10 rounded px-2 md:px-3 py-2 md:py-2.5">
                                 <div className="absolute top-0 left-0 w-[2px] h-full bg-white/20 transition-all group-hover:w-1" />
-                                <div className="text-[9px] font-mono text-white/30 uppercase tracking-widest mb-1">Sex</div>
-                                <div className="text-sm font-bold uppercase tracking-tight text-white/70 truncate">{character.gender}</div>
+                                <div className="text-[8px] md:text-[9px] font-mono text-white/30 uppercase tracking-widest mb-1">Sex</div>
+                                <div className="text-xs md:text-sm font-bold uppercase tracking-tight text-white/70 truncate">{character.gender}</div>
                             </div>
 
                             {/* Status Module (Merged) */}
-                            <div className={`relative group overflow-hidden bg-white/[0.02] border ${isAlive ? 'border-emerald-500/20' : isDead ? 'border-red-500/20' : 'border-yellow-500/20'} rounded px-3 py-2.5`}>
+                            <div className={`relative group overflow-hidden bg-white/[0.02] border ${isAlive ? 'border-emerald-500/20' : isDead ? 'border-red-500/20' : 'border-yellow-500/20'} rounded px-2 md:px-3 py-2 md:py-2.5`}>
                                 <div className={`absolute top-0 left-0 w-[2px] h-full ${isAlive ? 'bg-emerald-500' : isDead ? 'bg-red-500' : 'bg-yellow-500'} transition-all group-hover:w-1`} />
-                                <div className="text-[9px] font-mono text-white/30 uppercase tracking-widest mb-1">Vitality</div>
-                                <div className={`text-sm font-bold uppercase tracking-tight truncate ${isAlive ? 'text-emerald-400' : isDead ? 'text-red-500' : 'text-yellow-500'}`}>
+                                <div className="text-[8px] md:text-[9px] font-mono text-white/30 uppercase tracking-widest mb-1">Vitality</div>
+                                <div className={`text-xs md:text-sm font-bold uppercase tracking-tight truncate ${isAlive ? 'text-emerald-400' : isDead ? 'text-red-500' : 'text-yellow-500'}`}>
                                     {character.status}
                                 </div>
                             </div>
                         </div>
                    </div>
 
-                   {/* 2. NAVIGATION DATA (Fixed/Shrinkable) */}
-                   <div className="px-8 py-6 z-10 relative shrink-0">
+                   {/* 2. NAVIGATION DATA */}
+                   <div className="px-6 md:px-8 py-6 relative shrink-0">
                         <div className="text-[10px] font-mono font-bold text-white/30 tracking-widest uppercase mb-4 flex items-center gap-2">
                            <Globe className="w-3 h-3" /> Navigation History
                         </div>
 
                         {/* Trajectory Visualization */}
-                        <div className="p-6 bg-white/[0.02] rounded-lg border border-white/5 relative overflow-hidden group/nav">
+                        <div className="p-4 md:p-6 bg-white/[0.02] rounded-lg border border-white/5 relative overflow-hidden group/nav">
                             
                             {/* Animated Background Scan (Subtle) */}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover/nav:animate-[shimmer_2s_infinite]" />
@@ -218,13 +272,13 @@ export function CharacterCollectibleModal({
                                         <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
                                     </div>
                                     <div className="flex flex-col items-start text-left">
-                                        <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-1">Origin Point</span>
-                                        <span className="text-base font-bold text-white/70 uppercase leading-tight">{character.origin.name}</span>
+                                        <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-1 line-clamp-1">Origin</span>
+                                        <span className="text-sm md:text-base font-bold text-white/70 uppercase leading-tight line-clamp-1">{character.origin.name}</span>
                                     </div>
                                 </div>
 
                                 {/* Direction Indicator (Center) */}
-                                <div className="relative z-10 mt-0.5 bg-[#080808] px-2 border border-white/5 rounded-full py-0.5">
+                                <div className="relative z-10 mt-0.5 bg-[#080808] px-1 md:px-2 border border-white/5 rounded-full py-0.5">
                                      <ArrowRight className="w-3 h-3 text-white/30" />
                                 </div>
 
@@ -234,8 +288,8 @@ export function CharacterCollectibleModal({
                                          <div className={`w-2 h-2 rounded-full ${accentBg} animate-pulse`} />
                                     </div>
                                     <div className="flex flex-col items-end text-right">
-                                        <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-1">Current Position</span>
-                                        <span className={`text-base font-black uppercase leading-tight ${accentText} drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]`}>
+                                        <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-1 line-clamp-1">Position</span>
+                                        <span className={`text-sm md:text-base font-black uppercase leading-tight ${accentText} drop-shadow-[0_0_8px_rgba(0,0,0,0.5)] line-clamp-1`}>
                                             {character.location.name}
                                         </span>
                                     </div>
@@ -244,20 +298,20 @@ export function CharacterCollectibleModal({
                         </div>
                    </div>
 
-                   {/* 3. ENCOUNTER LOG (Scrollable) */}
-                   <div className="flex-1 overflow-y-auto custom-scrollbar px-8 pb-8 min-h-0">
-                        <div className="sticky top-0 bg-[#080808] z-30 py-4 border-b border-white/5 mb-2 flex justify-between items-end">
+                   {/* 3. ENCOUNTER LOG */}
+                   <div className="px-6 md:px-8 pb-8 min-h-0">
+                        <div className="py-4 border-b border-white/5 mb-2 flex justify-between items-end">
                              <div className="text-[10px] font-mono font-bold text-white/30 tracking-widest uppercase flex items-center gap-2">
                                 <Zap className="w-3 h-3" /> Encounter Log
                              </div>
                              <div className="text-[9px] font-mono text-white/20">{character.episode.length} ENTRIES</div>
                         </div>
                         
-                        <div className="grid grid-cols-8 gap-y-2 gap-x-2">
+                        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-y-2 gap-x-2">
                              {character.episode.map((ep, i) => (
                                  <div 
                                     key={ep.id} 
-                                    className={`text-left text-xs font-mono text-white/40 hover:${isHuman ? 'text-emerald-400' : 'text-fuchsia-400'} transition-colors cursor-help truncate`}
+                                    className={`text-left text-[10px] md:text-xs font-mono text-white/40 hover:${isHuman ? 'text-emerald-400' : 'text-fuchsia-400'} transition-colors cursor-help truncate`}
                                     title={ep.name}
                                  >
                                     #{ep.episode}
@@ -267,7 +321,7 @@ export function CharacterCollectibleModal({
                    </div>
 
                    {/* DECORATIVE GRADIENT (Over scroll) */}
-                   <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none z-40" />
+                   <div className="sticky bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none z-40" />
               </div>
 
             </motion.div>

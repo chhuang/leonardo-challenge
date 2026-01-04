@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Heart, Skull, User, Zap, Loader2 } from 'lucide-react';
 import { FilterState } from './character-filters';
+import { UserProfile } from '@/components/auth/user-profile';
 
 interface TacticalHudBarProps {
   filters: FilterState;
@@ -41,78 +42,80 @@ export function TacticalHudBar({
   const accentBg = filters.species === 'Human' ? 'bg-emerald-500' : 'bg-fuchsia-500';
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-4 pt-0 pointer-events-none flex justify-center">
+    <div className="hidden md:flex fixed bottom-0 left-0 right-0 z-[100] px-4 pb-4 pointer-events-none justify-center">
         
         {/* Main HUD Container */}
-        <div className="w-full max-w-5xl pointer-events-auto">
+        <div className="w-full max-w-6xl pointer-events-auto">
             
-            {/* Decorative Top Line */}
             <div className="flex items-end gap-2 mb-2 px-2 opacity-80">
                 <div className={`h-1 w-16 ${accentBg} transition-colors duration-500`} />
                 <div className="h-[1px] flex-1 bg-white/20" />
-                <div className="text-[10px] font-mono tracking-widest text-white/50">SYSTEM.UI.V2</div>
+                <div className="text-[10px] font-mono tracking-widest text-white/50 lowercase italic">system_terminal.v2</div>
             </div>
 
-            <div className="bg-zinc-950/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col md:flex-row items-center justify-between p-2 md:p-3 gap-4 relative overflow-hidden group transition-all duration-500">
+            <div className="bg-[#020904]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex items-center justify-between p-3 relative overflow-hidden group">
                 
                 {/* Background Tech Grid */}
-                <div className="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+                <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,1)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
 
-                {/* LEFT: Species Selector & Count */}
-                <div className="flex items-center gap-3 pl-2 md:pl-4 md:pr-6 md:border-r border-white/10 w-full md:w-auto justify-center md:justify-start">
-                    
-                    {/* Species Toggle Group */}
-                    <div className="flex bg-white/5 rounded-lg p-1 border border-white/10">
+                {/* LEFT: FILTER GROUPS */}
+                <div className="flex items-center gap-1 relative z-10 pl-2">
+                    {/* SPECIES GROUP */}
+                    <div className="flex bg-white/5 p-1 rounded-xl gap-1 border border-white/5">
                         <button
                             onClick={() => setSpecies('Human')}
-                            className={`p-2 rounded-md transition-all ${filters.species === 'Human' ? 'bg-emerald-500 text-emerald-950 shadow-[0_0_10px_rgba(16,185,129,0.4)]' : 'text-white/40 hover:text-white'}`}
+                            className={`flex flex-col items-center justify-center min-w-[80px] py-1.5 rounded-lg transition-all ${filters.species === 'Human' ? 'bg-emerald-500 text-emerald-950' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
                         >
-                            <User className="w-4 h-4 fill-current" />
+                            <User className={`w-3.5 h-3.5 mb-0.5 ${filters.species === 'Human' ? 'fill-current' : ''}`} />
+                            <span className="text-[9px] font-bold uppercase tracking-widest">Humans</span>
                         </button>
                         <button
                             onClick={() => setSpecies('Alien')}
-                            className={`p-2 rounded-md transition-all flex items-center justify-center w-8 h-8 ${filters.species === 'Alien' ? 'bg-fuchsia-500 text-fuchsia-950 shadow-[0_0_10px_rgba(232,121,249,0.4)]' : 'text-white/40 hover:text-white'}`}
+                            className={`flex flex-col items-center justify-center min-w-[80px] py-1.5 rounded-lg transition-all ${filters.species === 'Alien' ? 'bg-fuchsia-500 text-fuchsia-950' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
                         >
-                            <span className="text-sm leading-none">👽</span>
+                            <span className="text-xs leading-none mb-0.5">👽</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest">Aliens</span>
                         </button>
                     </div>
 
-                    <div className="h-6 w-[1px] bg-white/10 mx-2" />
+                    <div className="h-8 w-[1px] bg-white/10 mx-1" />
 
-                    {/* Count Display */}
-                    <div className="flex items-baseline gap-2 min-w-[80px] font-mono text-lg font-bold text-white/80">
-                         {loading ? (
-                             <Loader2 className="w-4 h-4 animate-spin text-white/30" />
-                         ) : (
-                             <span>
-                                 {totalCount}
-                             </span>
-                         )}
-                         <span className="text-white/30 uppercase">
-                             {filters.species === 'Alien' ? 'Aliens' : 'Humans'}
-                         </span>
+                    {/* STATUS GROUP */}
+                    <div className="flex bg-white/5 p-1 rounded-xl gap-1 border border-white/5">
+                        <button
+                            onClick={() => setStatus('Alive')}
+                            className={`flex flex-col items-center justify-center min-w-[80px] py-1.5 rounded-lg transition-all ${filters.status === 'Alive' ? 'bg-green-500/20 text-green-400 border border-green-500/40' : 'text-white/40 border border-transparent hover:text-white hover:bg-white/5'}`}
+                        >
+                            <Heart className={`w-3.5 h-3.5 mb-0.5 ${filters.status === 'Alive' ? 'fill-current' : ''}`} />
+                            <span className="text-[9px] font-bold uppercase tracking-widest">Alive</span>
+                        </button>
+                        <button
+                            onClick={() => setStatus('Dead')}
+                            className={`flex flex-col items-center justify-center min-w-[80px] py-1.5 rounded-lg transition-all ${filters.status === 'Dead' ? 'bg-white/10 text-white border border-white/30' : 'text-white/40 border border-transparent hover:text-white hover:bg-white/5'}`}
+                        >
+                            <Skull className="w-3.5 h-3.5 mb-0.5" strokeWidth={2.5} />
+                            <span className="text-[9px] font-bold uppercase tracking-widest">Dead</span>
+                        </button>
                     </div>
                 </div>
 
-                {/* CENTER: Pagination Controls */}
-                <div className="flex items-center gap-4 mx-auto">
+                {/* CENTER: PAGINATION */}
+                <div className="flex items-center gap-6 border-l border-r border-white/10 px-12 mx-auto">
                     <button
                         onClick={() => onPageChange(currentPage - 1)}
                         disabled={currentPage <= 1 || loading}
-                        className="p-2 rounded-full hover:bg-white/10 disabled:opacity-20 disabled:hover:bg-transparent transition-colors text-white"
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 disabled:opacity-20 transition-all text-white border border-white/10"
                     >
-                        <ChevronLeft className="w-6 h-6" />
+                        <ChevronLeft className="w-5 h-5" />
                     </button>
 
-                    <div className="flex items-center justify-center min-w-[60px]">
-                        <div className="flex items-baseline gap-1 font-mono text-lg font-bold text-white/80">
-                             {loading ? (
-                                 <span className="text-white/30 animate-pulse">...</span>
-                             ) : (
+                    <div className="flex flex-col items-center min-w-[100px]">
+                        <div className="flex items-baseline gap-2 font-mono text-xl font-black text-white">
+                             {loading ? "..." : (
                                 <>
-                                    <span>{currentPage}</span>
-                                    <span className="text-white/30">/</span>
-                                    <span className="text-white/30">{totalPages}</span>
+                                    <span>{currentPage.toString().padStart(2, '0')}</span>
+                                    <span className="text-white/20">/</span>
+                                    <span className="text-white/20">{totalPages.toString().padStart(2, '0')}</span>
                                 </>
                              )}
                         </div>
@@ -121,49 +124,27 @@ export function TacticalHudBar({
                     <button
                         onClick={() => onPageChange(currentPage + 1)}
                         disabled={currentPage >= totalPages || loading}
-                        className="p-2 rounded-full hover:bg-white/10 disabled:opacity-20 disabled:hover:bg-transparent transition-colors text-white"
+                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 disabled:opacity-20 transition-all text-white border border-white/10"
                     >
-                        <ChevronRight className="w-6 h-6" />
+                        <ChevronRight className="w-5 h-5" />
                     </button>
                 </div>
 
-                {/* RIGHT: Status Toggles */}
-                <div className="flex items-center gap-2 md:pr-2 w-full md:w-auto justify-center md:justify-end border-t md:border-t-0 border-white/5 pt-2 md:pt-0">
-                    {/* ALIVE Toggle */}
-                    <button
-                        onClick={() => setStatus('Alive')}
-                        className={`
-                            relative px-4 py-2 rounded-lg border flex items-center gap-2 transition-all flex-1 md:flex-none justify-center
-                            ${filters.status === 'Alive' 
-                                ? 'bg-green-500/20 border-green-500 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.3)]' 
-                                : 'bg-transparent border-white/10 text-white/40 hover:text-white hover:border-white/30'}
-                        `}
-                    >
-                        <Heart className={`w-4 h-4 ${filters.status === 'Alive' ? 'fill-current' : ''}`} />
-                        <span className="text-xs font-bold uppercase tracking-wider">Alive</span>
-                    </button>
-
-                    {/* DEAD Toggle */}
-                    <button
-                        onClick={() => setStatus('Dead')}
-                        className={`
-                            relative px-4 py-2 rounded-lg border flex items-center gap-2 transition-all flex-1 md:flex-none justify-center
-                            ${filters.status === 'Dead' 
-                                ? 'bg-zinc-700/50 border-white/50 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)] grayscale' 
-                                : 'bg-transparent border-white/10 text-white/40 hover:text-white hover:border-white/30'}
-                        `}
-                    >
-                        <Skull className="w-4 h-4" strokeWidth={2.5} />
-                        <span className="text-xs font-bold uppercase tracking-wider">Dead</span>
-                    </button>
+                {/* RIGHT: COUNT & SYSTEM INFO */}
+                <div className="flex items-center gap-8 pr-8 pl-4">
+                    <div className="flex flex-col items-end">
+                       <div className="flex items-baseline gap-3 font-mono text-xl font-black text-white">
+                           {totalCount.toLocaleString()}
+                           <span className={`uppercase font-black tracking-tighter ${accentText}`}>{filters.species === 'Alien' ? 'ALIENS' : 'HUMANS'}</span>
+                       </div>
+                    </div>
                 </div>
 
-                {/* Decorative Corner Accents */}
-                <div className={`absolute -bottom-1 -left-1 w-4 h-4 border-l-2 border-b-2 ${accentBorder} transition-colors duration-500`} />
-                <div className={`absolute -top-1 -right-1 w-4 h-4 border-r-2 border-t-2 ${accentBorder} transition-colors duration-500`} />
-
+                {/* Decorative End Accent */}
+                <div className={`absolute top-0 right-0 h-full w-1 ${accentBg} opacity-20`} />
             </div>
         </div>
     </div>
   );
+
 }
