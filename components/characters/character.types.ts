@@ -8,6 +8,7 @@ export interface Character {
   image: string;
   origin: { name: string };
   location: { name: string };
+  episode: { id: string }[];
 }
 
 export interface CharacterDetail extends Character {

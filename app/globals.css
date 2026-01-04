@@ -4,48 +4,71 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Rick and Morty Space Theme - Dark Mode Default */
+
+    /* Deep space background with subtle purple tint */
+    --background: 270 25% 8%;
+    --foreground: 0 0% 95%;
+
+    /* Cards - slightly lighter dark purple */
+    --card: 275 30% 12%;
+    --card-foreground: 0 0% 95%;
+
+    /* Popover matches card */
+    --popover: 275 30% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Portal Green - Primary accent */
+    --primary: 125 100% 45%;
+    --primary-foreground: 125 100% 8%;
+
+    /* Space Purple - Secondary */
+    --secondary: 275 60% 45%;
+    --secondary-foreground: 0 0% 95%;
+
+    /* Muted - dark purple-gray */
+    --muted: 270 20% 18%;
+    --muted-foreground: 0 0% 60%;
+
+    /* Accent - Portal Cyan */
+    --accent: 185 80% 45%;
+    --accent-foreground: 0 0% 95%;
+
+    /* Destructive - kept as red/orange */
+    --destructive: 25 95% 53%;
+    --destructive-foreground: 0 0% 95%;
+
+    /* Border - dark purple */
+    --border: 275 30% 20%;
+    --input: 275 30% 20%;
+
+    /* Ring - portal green glow */
+    --ring: 125 100% 45%;
+
     --radius: 0.5rem;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+  .light {
+    /* Light mode - space theme inspired */
+    --background: 220 20% 97%;
+    --foreground: 270 30% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 270 30% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 30% 15%;
+    --primary: 125 80% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 275 50% 85%;
+    --secondary-foreground: 270 30% 15%;
+    --muted: 275 20% 90%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 185 70% 85%;
+    --accent-foreground: 270 30% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 275 20% 85%;
+    --input: 275 20% 85%;
+    --ring: 125 80% 40%;
   }
 }
 
@@ -55,5 +78,107 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Rick and Morty Space Theme Utilities */
+@layer utilities {
+  /* Portal glow effect - using border instead of shadow */
+  .portal-glow {
+    border: 2px solid rgba(57, 255, 20, 0.5);
+    box-shadow: none;
+  }
+
+  .portal-glow-strong {
+    border: 3px solid rgba(57, 255, 20, 0.7);
+    box-shadow: none;
+  }
+
+  /* Space glass effect */
+  .space-glass {
+    background: rgba(39, 20, 60, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(123, 44, 191, 0.3);
+  }
+
+  .space-glass-light {
+    background: rgba(59, 30, 80, 0.3);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(123, 44, 191, 0.2);
+  }
+
+  /* Portal animation gradient */
+  @keyframes portal-swirl {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .portal-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(125, 100%, 45%) 0%,
+      hsl(185, 80%, 45%) 25%,
+      hsl(275, 60%, 45%) 50%,
+      hsl(125, 100%, 45%) 75%,
+      hsl(185, 80%, 45%) 100%
+    );
+    background-size: 400% 400%;
+    animation: portal-swirl 8s ease infinite;
+  }
+
+  /* Space stars background */
+  .space-bg {
+    background-image: radial-gradient(
+        1px 1px at 20px 30px,
+        rgba(255, 255, 255, 0.3),
+        transparent
+      ),
+      radial-gradient(
+        1px 1px at 40px 70px,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      ),
+      radial-gradient(
+        1.5px 1.5px at 50px 160px,
+        rgba(255, 255, 255, 0.3),
+        transparent
+      ),
+      radial-gradient(
+        1px 1px at 90px 40px,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      ),
+      radial-gradient(
+        1px 1px at 130px 80px,
+        rgba(255, 255, 255, 0.25),
+        transparent
+      ),
+      radial-gradient(
+        2px 2px at 160px 120px,
+        rgba(123, 44, 191, 0.4),
+        transparent
+      );
+    background-size: 200px 200px;
+    background-attachment: fixed;
+  }
+
+  /* Card hover with portal effect */
+  .card-portal-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-portal-hover:hover {
+    border-color: rgba(57, 255, 20, 0.5);
+    transform: translateY(-2px);
+  }
+
+  /* 3D Perspective */
+  .perspective-1000 {
+    perspective: 1000px;
   }
 }

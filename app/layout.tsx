@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ApolloProvider>
           <UserProvider>
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col space-bg">
               <Header />
               <main className="flex-1">
                 <AuthGate>{children}</AuthGate>
