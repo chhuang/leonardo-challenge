@@ -2,6 +2,7 @@ import { ApolloProvider } from '@/lib/apollo/client';
 import { UserProvider } from '@/components/auth/user-context';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { Header } from '@/components/layout/header';
+import { TacticalBackground } from '@/components/layout/tactical-background';
 import './globals.css';
 import type { Metadata } from 'next';
 
@@ -16,7 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ApolloProvider>
           <UserProvider>
-            <div className="min-h-screen flex flex-col space-bg">
+            <div className="min-h-screen flex flex-col space-bg relative">
+              <TacticalBackground />
               <Header />
               <main className="flex-1 flex flex-col">
                 <AuthGate>{children}</AuthGate>

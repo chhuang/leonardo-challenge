@@ -41,7 +41,7 @@ export function AuthForm() {
   };
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-background overflow-hidden">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 overflow-hidden">
       {/* TECH FRAME CONTAINER */}
       <div className="relative w-full max-w-md bg-[#020904] overflow-hidden rounded-none border border-white/10 shadow-2xl p-8">
         
