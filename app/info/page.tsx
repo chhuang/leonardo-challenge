@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { MasonryGrid } from '@/components/characters/masonry-grid';
+import { CharacterCollectibleCard } from '@/components/characters/character-collectible-card';
 import { TacticalHudBar } from '@/components/characters/tactical-hud-bar';
 import { MobileNavHud } from '@/components/characters/mobile-nav-hud';
 import { CharacterFilters, FilterState } from '@/components/characters/character-filters';
@@ -95,7 +95,7 @@ export default function InfoPage() {
        <div className="container mx-auto px-4 pt-24 md:pt-32 pb-8 max-w-7xl">
          
          {/* Grid Content */}
-         <AnimatePresence mode='wait'>
+          <AnimatePresence mode="popLayout">
             <motion.div
                 key={filters.species + filters.status + (isMobile ? 'mobile' : currentPage)}
                 initial={{ opacity: 0, y: 20 }}
@@ -103,13 +103,22 @@ export default function InfoPage() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
             >
-                <MasonryGrid
-                    characters={allCharacters}
-                    loading={loading && allCharacters.length === 0}
-                    onCharacterClick={setSelectedCharacterId}
-                />
+                {loading && allCharacters.length === 0 ? (
+                  <GridSkeleton />
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {allCharacters.map((character, index) => (
+                      <CharacterCollectibleCard
+                        key={character.id}
+                        character={character}
+                        onClick={() => setSelectedCharacterId(character.id)}
+                        index={index}
+                      />
+                    ))}
+                  </div>
+                )}
             </motion.div>
-         </AnimatePresence>
+          </AnimatePresence>
 
          {/* INFINITE SCROLL SENTINEL (MOBILE ONLY) */}
          {isMobile && currentPage < totalPages && (
@@ -158,6 +167,19 @@ export default function InfoPage() {
         isOpen={!!selectedCharacterId}
         onClose={() => setSelectedCharacterId(null)}
       />
+    </div>
+  );
+}
+
+function GridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className="bg-white/5 rounded-3xl aspect-[3/4.2] animate-pulse border border-white/5 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-1/2 bg-white/5" />
+            <div className="absolute bottom-4 left-4 right-4 h-8 bg-white/10 rounded" />
+        </div>
+      ))}
     </div>
   );
 }
