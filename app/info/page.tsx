@@ -10,6 +10,7 @@ import { CharacterFilters, FilterState } from '@/components/characters/character
 import { useCharacterData } from '@/components/characters/use-character-data.hooks';
 import { useUserContext } from '@/components/auth/user-context';
 import { CharacterCollectibleModal } from '@/components/characters/character-collectible-modal';
+import { MultiverseAnalytics } from '@/components/characters/multiverse-analytics';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
@@ -95,6 +96,9 @@ export default function InfoPage() {
        
        <div className="container mx-auto px-4 pt-24 md:pt-32 pb-8 max-w-7xl">
          
+         {/* Multiverse Analytics - COMMAND CENTER */}
+         <MultiverseAnalytics />
+
          {/* Grid Content */}
           <AnimatePresence mode="popLayout">
             <motion.div
@@ -162,7 +166,6 @@ export default function InfoPage() {
         </>
       )}
 
-      {/* Collectible Modal */}
       <CharacterCollectibleModal
         characterId={selectedCharacterId}
         isOpen={!!selectedCharacterId}

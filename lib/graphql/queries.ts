@@ -60,3 +60,57 @@ export const GET_CHARACTER = gql`
     }
   }
 `;
+
+export const GET_LOCATIONS_WITH_RESIDENTS = gql`
+  query GetLocationsWithResidents($page: Int) {
+    locations(page: $page) {
+      info {
+        pages
+        count
+      }
+      results {
+        id
+        name
+        residents {
+          id
+          image
+        }
+      }
+    }
+  }
+`;
+
+export const GET_MULTIVERSE_STATS = gql`
+  query GetMultiverseStats {
+    total: characters {
+      info {
+        count
+      }
+    }
+    humans: characters(filter: { species: "Human" }) {
+      info {
+        count
+      }
+    }
+    aliens: characters(filter: { species: "Alien" }) {
+      info {
+        count
+      }
+    }
+    alive: characters(filter: { status: "Alive" }) {
+      info {
+        count
+      }
+    }
+    dead: characters(filter: { status: "Dead" }) {
+      info {
+        count
+      }
+    }
+    unknown: characters(filter: { status: "unknown" }) {
+      info {
+        count
+      }
+    }
+  }
+`;
