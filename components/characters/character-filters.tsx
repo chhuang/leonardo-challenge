@@ -58,7 +58,7 @@ export function CharacterFilters({ currentFilters, onFilterChange }: CharacterFi
              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/50 to-pink-500/20 z-0" />
 
              <div className="relative z-10 flex flex-col items-center">
-                <Zap className="w-20 h-20 text-purple-200 mb-4 drop-shadow-lg" strokeWidth={1.5} />
+                <div className="text-8xl mb-4 drop-shadow-lg">👽</div>
                 <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white drop-shadow-xl">
                     Alien
                 </h2>

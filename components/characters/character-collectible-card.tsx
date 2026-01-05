@@ -28,7 +28,7 @@ function getSpeciesTheme(species: string) {
         borderColor: 'border-fuchsia-500', 
         glow: 'shadow-fuchsia-500/40',
         bgGradient: 'from-fuchsia-950/90 to-purple-950/90',
-        icon: <Zap className="w-4 h-4 text-fuchsia-950 fill-current" />
+        icon: <span className="w-4 h-4 flex items-center justify-center text-sm leading-none">👽</span>
     };
     // Fallback / Other
     return { 
@@ -168,12 +168,12 @@ export function CharacterCollectibleCard({
                         <div className="flex-1 h-full flex items-center justify-between px-4 bg-white/5">
                             <div className="flex items-center gap-3">
                                 <div className={`
-                                    relative w-8 h-8 rounded-lg flex items-center justify-center
+                                    relative w-7 h-7 rounded-md flex items-center justify-center
                                     ${isAlive ? 'bg-green-500 text-green-950' : isDead ? 'bg-red-500 text-red-950' : 'bg-slate-700 text-white'}
                                 `}>
-                                    {isAlive && <Heart className="w-5 h-5 fill-current" />}
-                                    {isDead && <Skull className="w-6 h-6" strokeWidth={2.5} />}
-                                    {!isAlive && !isDead && <Crosshair className="w-5 h-5" />}
+                                    {isAlive && <Heart className="w-4 h-4 fill-current" />}
+                                    {isDead && <Skull className="w-5 h-5" strokeWidth={2.5} />}
+                                    {!isAlive && !isDead && <Crosshair className="w-4 h-4" />}
                                     
                                     {/* Pulse Effect */}
                                     {isAlive && <div className="absolute inset-0 rounded-lg bg-green-500 animate-ping opacity-30" />}
@@ -185,10 +185,9 @@ export function CharacterCollectibleCard({
                             </div>
                         </div>
 
-                        {/* Slot 2: Species */}
-                        <div className="w-16 h-full flex items-center justify-center relative overflow-hidden group/species">
+                         <div className="w-16 h-full flex items-center justify-center relative overflow-hidden group/species">
                              <div className={`absolute inset-0 opacity-10 ${theme.primary} group-hover/species:opacity-20 transition-opacity`} />
-                             <div className={`p-1.5 rounded-md ${theme.primary} shadow-lg`}>
+                             <div className={`w-7 h-7 rounded-md flex items-center justify-center ${theme.primary} shadow-lg`}>
                                  {theme.icon}
                              </div>
                         </div>
