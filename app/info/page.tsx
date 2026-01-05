@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { TacticalLoader } from '@/components/characters/tactical-loader';
 import { CharacterCollectibleCard } from '@/components/characters/character-collectible-card';
 import { TacticalHudBar } from '@/components/characters/tactical-hud-bar';
 import { MobileNavHud } from '@/components/characters/mobile-nav-hud';
@@ -98,13 +99,13 @@ export default function InfoPage() {
           <AnimatePresence mode="popLayout">
             <motion.div
                 key={filters.species + filters.status + (isMobile ? 'mobile' : currentPage)}
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
             >
                 {loading && allCharacters.length === 0 ? (
-                  <GridSkeleton />
+                  <TacticalLoader fullScreen />
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {allCharacters.map((character, index) => (
@@ -167,19 +168,6 @@ export default function InfoPage() {
         isOpen={!!selectedCharacterId}
         onClose={() => setSelectedCharacterId(null)}
       />
-    </div>
-  );
-}
-
-function GridSkeleton() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="bg-white/5 rounded-3xl aspect-[3/4.2] animate-pulse border border-white/5 relative overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-1/2 bg-white/5" />
-            <div className="absolute bottom-4 left-4 right-4 h-8 bg-white/10 rounded" />
-        </div>
-      ))}
     </div>
   );
 }

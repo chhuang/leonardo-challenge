@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <UserProvider>
             <div className="min-h-screen flex flex-col space-bg">
               <Header />
-              <main className="flex-1">
+              <main className="flex-1 flex flex-col">
                 <AuthGate>{children}</AuthGate>
               </main>
             </div>

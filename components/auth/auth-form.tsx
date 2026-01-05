@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,6 +15,14 @@ export function AuthForm() {
     jobTitle: '',
   });
   const [errors, setErrors] = useState<Partial<UserInfo>>({});
+
+  useEffect(() => {
+    // Strictly lock scroll on the whole page while login is active
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +41,7 @@ export function AuthForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-background overflow-hidden">
       {/* TECH FRAME CONTAINER */}
       <div className="relative w-full max-w-md bg-[#020904] overflow-hidden rounded-none border border-white/10 shadow-2xl p-8">
         
